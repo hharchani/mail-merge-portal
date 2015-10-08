@@ -102,7 +102,7 @@ return array(
 	'docx'	=>	array('application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/zip', 'application/msword', 'application/x-zip'),
 	'dot'	=>	array('application/msword', 'application/vnd.ms-office'),
 	'dotx'	=>	array('application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/zip', 'application/msword'),
-	'xlsx'	=>	array('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/zip', 'application/vnd.ms-excel', 'application/msword', 'application/x-zip'),
+	'xlsx'	=>	array('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/zip', 'application/vnd.ms-excel', 'application/msword', 'application/x-zip', 'application/octet-stream'),
 	'word'	=>	array('application/msword', 'application/octet-stream'),
 	'xl'	=>	'application/excel',
 	'eml'	=>	'message/rfc822',
@@ -154,5 +154,6 @@ return array(
 	'vcf'	=>	'text/x-vcard',
 	'srt'	=>	array('text/srt', 'text/plain'),
 	'vtt'	=>	array('text/vtt', 'text/plain'),
-	'ico'	=>	array('image/x-icon', 'image/x-ico', 'image/vnd.microsoft.icon')
+	'ico'	=>	array('image/x-icon', 'image/x-ico', 'image/vnd.microsoft.icon'),
+	'ods'	=>	array('application/vnd.oasis.opendocument.spreadsheet')
 );
