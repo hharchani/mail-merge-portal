@@ -204,6 +204,11 @@ class CI_Log {
 			$date = date($this->_date_fmt);
 		}
 
+		if ( substr($msg, 0, 5) == 'LOG: ' ) {
+			$level = 'LOG';
+			$msg = substr($msg, 5);
+		}
+
 		$message .= $level.' - '.$date.' --> '.$msg."\n";
 
 		flock($fp, LOCK_EX);
