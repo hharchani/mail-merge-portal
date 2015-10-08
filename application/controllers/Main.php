@@ -20,9 +20,9 @@ class Main extends CI_Controller {
     }
 
     public function submit() {
-        $this->load->view('partial/header',[
+        $this->load->view('partial/header', array(
             'email' => $this->auth->user()->email
-        ]);
+        ));
         $this->load->view('submit');
         $this->load->view('partial/footer');
     }
@@ -34,15 +34,15 @@ class Main extends CI_Controller {
                 redirect(base_url('main/status/' . $this->session->task_id));
             }
         }
-        $this->load->view('partial/header',[
+        $this->load->view('partial/header',array(
             'email' => $this->auth->user()->email
-        ]);
+        ));
         $this->load->model('task');
         $task_details = $this->task->get_task_status($task_id);
-        $this->load->view('status', [
+        $this->load->view('status', array(
             'task_id' => $task_id,
             'task_details' => $task_details
-        ]);
+        ));
         $this->load->view('partial/footer');
     }
 
@@ -58,10 +58,10 @@ class Main extends CI_Controller {
 
         $this->load->library('upload');
 
-        $files_data = [
+        $files_data = array(
             'marks' => null,
             'email' => null
-        ];
+        );
 
         // Validating files
         foreach($files_data as $file_name => $data) {
@@ -70,11 +70,11 @@ class Main extends CI_Controller {
                 $e  = str_replace('.', '-', $this->auth->user()->email);
                 $ip = str_replace('.', '-', $this->input->ip_address());
                 $tmp_file_name = 'tmp_' . $file_name . '_file_by_' . $e . '_from_' . $ip . '_at_' . $current_time;
-                $this->upload->initialize([
+                $this->upload->initialize(array(
                     'file_name'     => $tmp_file_name,
                     'upload_path'   => $this->config->item('upload_dir'),
                     'allowed_types' => 'csv'
-                ]);
+                ));
                 $response->$file_name->success = $this->upload->do_upload( $file_name );
                 $response->$file_name->errors  = $this->upload->display_errors('', '');
                 $response->$file_name->data = $this->upload->data();
@@ -86,7 +86,7 @@ class Main extends CI_Controller {
             }
         }
         // Validating input data
-        $task_data = ['attendance_month' => null, 'exam_name' => null];
+        $task_data = array('attendance_month' => null, 'exam_name' => null);
         foreach($task_data as $name => $data) {
             $response->$name = new stdClass();
             if ( empty($this->input->post($name))) {
@@ -115,12 +115,12 @@ class Main extends CI_Controller {
         // Marks file
         $marks = $this->excel_reader->read($files_data['marks']['full_path']);
         $marks_fields = $marks->get_fields();
-        $marks_diff = array_diff([
+        $marks_diff = array_diff(array(
             'roll_no',
             'course_code',
             'Max Marks',
             'Marks Secured'
-        ], $marks_fields);
+        ), $marks_fields);
         if (count($marks_diff) > 0) {
             $response->marks->success = false;
             $response->marks->errors = 'Reading marks file failed. Fields ' . implode(', ', $marks_diff) . ' not found.';
@@ -129,10 +129,10 @@ class Main extends CI_Controller {
         // Email file
         $emails = $this->excel_reader->read($files_data['email']['full_path']);
         $email_fields = $emails->get_fields();
-        $email_diff = array_diff([
+        $email_diff = array_diff(array(
             'roll_no',
             'father_email_id',
-        ], $email_fields);
+        ), $email_fields);
         if (count($email_diff) > 0) {
             $response->email->success = false;
             $response->email->errors = 'Reading email file failed. Fields ' . implode(', ', $email_diff) . ' not found.';
@@ -176,8 +176,8 @@ class Main extends CI_Controller {
 
         $this->load->model('student');
         $this->load->model('course');
-        $months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
-        $months_available = [];
+        $months = array( 'jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec');
+        $months_available = array();
         foreach($months as $month) {
             if ( in_array( $month . '-classes' , $marks_fields) ) {
                 $months_available[] = $month;
@@ -195,7 +195,7 @@ class Main extends CI_Controller {
                 $classes_total += $a->get($month.'-classes');
                 $classes_missed += $a->get($month.'-absents');
             }
-            $this->course->insert_marks_info([
+            $this->course->insert_marks_info(array(
                 'task_id'       => $task_id,
                 'student_id'    => $student->id,
                 'course_id'     => $course_id,
@@ -204,7 +204,7 @@ class Main extends CI_Controller {
                 'classes_total' => $classes_total,
                 'classes_missed'=> $classes_missed,
                 'position'      => $a->get('Position')
-            ]);
+            ));
         });
 
         $this->load->library('email_wrapper');

@@ -34,7 +34,7 @@ class My_excel_reader extends SpreadsheetReader {
         $b = null;
         foreach($this as $row) {
             if ($this->set_ref) {
-                $ref = [];
+                $ref = array();
                 foreach($row as $i => $name) {
                     $ref[$name] = $i;
                 }

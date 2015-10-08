@@ -10,13 +10,13 @@ class Task extends CI_Model {
     }
 
     public function create_task($email, $ip, $time_created, $exam_name, $attendance_month) {
-        $task_data = [
+        $task_data = array(
             'created_by'        => $email,
             'ip'                => $ip,
             'time_created'      => $time_created,
             'exam_name'         => $exam_name,
             'attendance_month'  => $attendance_month
-        ];
+        );
         $this->db->insert('task', $task_data);
         $task_data['id'] = $this->db->insert_id();
         return (object) $task_data;
@@ -31,27 +31,27 @@ class Task extends CI_Model {
     }
 
     public function insert_status_msg($task_id, $msg) {
-        $this->db->insert('task_status', [
+        $this->db->insert('task_status', array(
             'task_id' => $task_id,
             'msg' => $msg
-        ]);
+        ));
     }
 
     public function set_task_status($task_id, $status) {
         $this->db->where('id', $task_id);
-        $this->db->update('task',[
+        $this->db->update('task',array(
             'status' => $status
-        ]);
+        ));
     }
 
     public function get_task_status($task_id) {
-        $result = $this->db->get_where('task', ['id' => $task_id]);
+        $result = $this->db->get_where('task', array('id' => $task_id));
         return $result->row();
     }
 
     public function get_task_status_msg($task_id) {
         $this->db->select('msg');
-        $query = $this->db->get_where('task_status', ['task_id' => $task_id]);
+        $query = $this->db->get_where('task_status', array('task_id' => $task_id));
         $result = $query->result();
         $val = [];
         if ($result) {

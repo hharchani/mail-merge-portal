@@ -10,12 +10,12 @@ class Course extends CI_Model {
 
     public function get_or_create($course_code, $course_name=null, $credits=null) {
         $this->db->select('id');
-        $r = $this->db->get_where('course', ['code' => $course_code]);
+        $r = $this->db->get_where('course', array('code' => $course_code));
         $row = $r->row();
         if ($row === null) {
-            $insert_data = [
+            $insert_data = array(
                 'code' => $course_code
-            ];
+            );
             if ($course_name) {
                 $insert_data['name'] = ucwords(strtolower(trim($course_name)));
             }
@@ -26,7 +26,7 @@ class Course extends CI_Model {
             return $this->db->insert_id();
         }
         else {
-            $update_data = [];
+            $update_data = array();
             if ($course_name) {
                 $update_data['name'] = ucwords(strtolower(trim($course_name)));
             }

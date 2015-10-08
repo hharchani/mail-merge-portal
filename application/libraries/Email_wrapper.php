@@ -36,7 +36,7 @@ class Email_wrapper {
 
         $s = new stdClass();
         $s->name = 'Harshit Harchani';
-        $c = [];
+        $c = array();
         $d = new stdClass();
         $d->course_name     = 'Compilers';
         $d->course_code     = 'CSE419';

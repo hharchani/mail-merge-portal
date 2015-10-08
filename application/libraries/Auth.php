@@ -30,9 +30,9 @@ class Auth {
 
     public function is_valid_user() {
         $this->ci->load->database();
-        return $this->ci->db->get_where('users', [
+        return $this->ci->db->get_where('users', array(
             'email' => $this->user()->email
-        ])->row() !== null;
+        ))->row() !== null;
     }
 
     public function logout() {

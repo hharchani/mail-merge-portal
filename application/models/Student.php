@@ -9,12 +9,12 @@ class Student extends CI_Model {
     }
 
     public function get_or_create($roll_no, $name=null, $parent_email=null) {
-        $result = $this->db->get_where('student', ['roll_no' => $roll_no]);
+        $result = $this->db->get_where('student', array('roll_no' => $roll_no));
         $row = $result->row();
         if ($row === null) {
-            $insert_data = [
+            $insert_data = array(
                 'roll_no' => $roll_no,
-            ];
+            );
             if ($name) {
                 $insert_data['name'] = ucwords(strtolower(trim($name)));
             }
@@ -26,7 +26,7 @@ class Student extends CI_Model {
             return (object) $insert_data;
         }
         else {
-            $update_data = [];
+            $update_data = array();
             if ($name) {
                 $update_data['name'] = ucwords(strtolower(trim($name)));
                 $row->name = $update_data['name'];
