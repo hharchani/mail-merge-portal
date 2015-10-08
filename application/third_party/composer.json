@@ -1,0 +1,6 @@
+{
+    "require": {
+        "jasig/phpcas": "^1.3",
+        "nuovo/spreadsheet-reader": "^0.5.11"
+    }
+}
