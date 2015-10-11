@@ -5,12 +5,14 @@ class Main extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library('auth');
-        if ( ! $this->auth->is_valid_user() ) {
-            $email = $this->auth->user()->email;
+        $this->load->library('auth_lib');
+        if ( ! $this->auth_lib->is_valid_user() ) {
+            $email = $this->auth_lib->user()->email;
             $ip = $this->input->ip_address();
             my_log("User `$email` tried to login from $ip");
-            $error_msg = 'You are not allowed to view this page.<br/> Contact Administrator.';
+            $error_msg = 'You are not allowed to view this page.<br/>
+            Contact Administrator.<br/>
+            You can logout from <a href="'.base_url('logout').'">here</a>';
             show_error($error_msg, 403, 'Permission Denied');
         }
     }
@@ -21,7 +23,7 @@ class Main extends CI_Controller {
 
     public function submit() {
         $this->load->view('partial/header', array(
-            'email' => $this->auth->user()->email
+            'email' => $this->auth_lib->user()->email
         ));
         $this->load->view('submit');
         $this->load->view('partial/footer');
@@ -35,7 +37,7 @@ class Main extends CI_Controller {
             }
         }
         $this->load->view('partial/header',array(
-            'email' => $this->auth->user()->email
+            'email' => $this->auth_lib->user()->email
         ));
         $this->load->model('task');
         $task_details = $this->task->get_task_status($task_id);
@@ -44,10 +46,6 @@ class Main extends CI_Controller {
             'task_details' => $task_details
         ));
         $this->load->view('partial/footer');
-    }
-
-    public function logout() {
-        $this->auth->logout();
     }
 
     public function upload() {
@@ -67,7 +65,7 @@ class Main extends CI_Controller {
         foreach($files_data as $file_name => $data) {
             $response->$file_name = new stdClass();
             if ( $_FILES AND isset($_FILES[ $file_name ]) AND $_FILES[ $file_name ]['name'] ) {
-                $e  = str_replace('.', '-', $this->auth->user()->email);
+                $e  = str_replace('.', '-', $this->auth_lib->user()->email);
                 $ip = str_replace('.', '-', $this->input->ip_address());
                 $tmp_file_name = 'tmp_' . $file_name . '_file_by_' . $e . '_from_' . $ip . '_at_' . $current_time;
                 $this->upload->initialize(array(
@@ -147,7 +145,7 @@ class Main extends CI_Controller {
         $this->load->model('task');
 
         $task = $this->task->create_task(
-            $this->auth->user()->email,
+            $this->auth_lib->user()->email,
             $this->input->ip_address(),
             $current_time,
             $this->input->post('exam_name'),

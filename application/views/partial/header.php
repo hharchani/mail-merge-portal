@@ -53,6 +53,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <main>
         <p class="text-right alert">
             <?php echo $email; ?>
-            <a class="btn btn-default" href="<?php echo base_url(); ?>main/logout">Logout</a>
+            <a class="btn btn-default" href="<?php echo base_url('logout'); ?>">Logout</a>
         </p>
         <h1 class="text-center">Send Emails</h1>

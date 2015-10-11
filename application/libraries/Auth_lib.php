@@ -1,11 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Auth {
+class Auth_lib {
     private $ci;
     private $authenticated = false;
     private $user = null;
 
+    //Force authentication as soon as library is loaded.
     public function __construct() {
         $this->ci = & get_instance();
         $this->ci->load->library('session');
