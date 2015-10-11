@@ -2,6 +2,9 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <p><a href="<?php echo base_url('main/submit'); ?>">Back to Submit</a></p>
+<div class="success-msg alert alert-success" style="display:none;">
+    Successfully uploaded files.
+</div>
 <?php if ($task_details): ?>
 <div class="well well-small">
     <div class="row">
@@ -84,4 +87,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         });
     }
     $(fetchStatus);
+    $(function(){
+        if (sessionStorage.getItem('show_form_success_msg') === 'true') {
+            $('.success-msg').show();
+            sessionStorage.removeItem('show_form_success_msg');
+        }
+    });
 </script>

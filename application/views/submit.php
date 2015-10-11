@@ -2,9 +2,6 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <p><a href="<?php echo base_url('main/status'); ?>">Go to Status</a></p>
-<div class="success-msg alert alert-success" style="display:none;">
-    Successfully uploaded files.
-</div>
 <?php echo form_open_multipart(
     base_url('main/upload'),
     array('method'=>'post', 'class'=>'form-horizontal well'));
@@ -73,12 +70,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         }
                     });
                     if (success) {
-                        $('form').slideUp(200);
-                        $('.success-msg').slideDown(200, function(){
-                            setTimeout(function(){
-                                window.location = base_url + 'main/status/' + data.task_id;
-                            }, 1000);
-                        });
+                        sessionStorage.setItem('show_form_success_msg', 'true');
+                        window.location = base_url + 'main/status/' + data.task_id;
                     }
                 },
                 cache: false,
