@@ -89,7 +89,7 @@ class Main extends CI_Controller {
         $task_data = array('attendance_month' => null, 'exam_name' => null);
         foreach($task_data as $name => $data) {
             $response->$name = new stdClass();
-            if ( empty($this->input->post($name))) {
+            if ( ! $this->input->post($name) ) {
                 $response->$name->success = false;
                 $response->$name->errors = 'Please fill this field';
             }
@@ -183,19 +183,20 @@ class Main extends CI_Controller {
                 $months_available[] = $month;
             }
         }
-        $marks->each( function( $a ) use ($task_id, $months_available) {
+        $CI = $this;
+        $marks->each( function( $a ) use ($task_id, $months_available, $CI) {
             if ( ! $a->roll_no) {
                 return;
             }
-            $student = $this->student->get_or_create( $a->roll_no, $a->name );
-            $course_id  = $this->course->get_or_create( $a->course_code, $a->course_name, $a->credits );
+            $student = $CI->student->get_or_create( $a->roll_no, $a->name );
+            $course_id  = $CI->course->get_or_create( $a->course_code, $a->course_name, $a->credits );
             $classes_total = 0;
             $classes_missed = 0;
             foreach($months_available as $month) {
                 $classes_total += $a->get($month.'-classes');
                 $classes_missed += $a->get($month.'-absents');
             }
-            $this->course->insert_marks_info(array(
+            $CI->course->insert_marks_info(array(
                 'task_id'       => $task_id,
                 'student_id'    => $student->id,
                 'course_id'     => $course_id,
@@ -208,22 +209,22 @@ class Main extends CI_Controller {
         });
 
         $this->load->library('email_wrapper');
-        $emails->each( function( $a ) use ($task) {
+        $emails->each( function( $a ) use ($task, $CI) {
             $task_id = $task->id;
-            $student = $this->student->get_or_create( $a->roll_no, null, $a->father_email_id );
-            $course_data = $this->course->get_data($task_id, $student->id);
+            $student = $CI->student->get_or_create( $a->roll_no, null, $a->father_email_id );
+            $course_data = $CI->course->get_data($task_id, $student->id);
             if (count($course_data)) {
-                $email_success = $this->email_wrapper->send($student, $course_data, $task);
+                $email_success = $CI->email_wrapper->send($student, $course_data, $task);
                 if ($email_success) {
-                    $this->task->increase_sent_email($task_id);
+                    $CI->task->increase_sent_email($task_id);
                 }
                 else {
-                    $this->task->increase_failed_email($task_id);
-                    $this->task->insert_status_msg($task_id, "Warning: Email to $student->parent_email failed");
+                    $CI->task->increase_failed_email($task_id);
+                    $CI->task->insert_status_msg($task_id, "Warning: Email to $student->parent_email failed");
                 }
             }
             else {
-                $this->task->insert_status_msg($task_id, "Info: No marks or attendance found for student with roll_no $student->roll_no");
+                $CI->task->insert_status_msg($task_id, "Info: No marks or attendance found for student with roll_no $student->roll_no");
             }
         });
         $this->task->set_task_status($task_id, 'completed');
