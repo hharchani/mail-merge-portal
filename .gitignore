@@ -1,5 +1,6 @@
 .htaccess
 application/uploads
+application/config/.gitignore
 
 .DS_Store
 
