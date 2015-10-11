@@ -1,8 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
-<h1 class="text-center">Send Emails</h1>
-<p><a href="<?php echo base_url('main/submit'); ?>">Back to Submit</a></p>
+<h2 class="text-center">Email Portal</h2>
+<ul class="nav nav-tabs nav-justified">
+    <li><a href="<?php echo base_url('main/submit'); ?>">Send Email</a></li>
+    <li class="active"><a href="<?php echo base_url('main/status'); ?>">Check Status</a></li>
+    <li><a href="<?php echo base_url('users'); ?>">Manage Users</a></li>
+</ul>
 <div class="success-msg alert alert-success" style="display:none;">
     Successfully uploaded files.
 </div>

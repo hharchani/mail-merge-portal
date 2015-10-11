@@ -1,8 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
-<h1 class="text-center">Send Emails</h1>
-<p><a href="<?php echo base_url('main/status'); ?>">Go to Status</a></p>
+<h2 class="text-center">Email Portal</h2>
+<ul class="nav nav-tabs nav-justified">
+    <li class="active"><a href="<?php echo base_url('main/submit'); ?>">Send Email</a></li>
+    <li><a href="<?php echo base_url('main/status'); ?>">Check Status</a></li>
+    <li><a href="<?php echo base_url('users'); ?>">Manage Users</a></li>
+</ul>
 <?php echo form_open_multipart(
     base_url('main/upload'),
     array('method'=>'post', 'class'=>'form-horizontal well'));
