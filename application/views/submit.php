@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+<h1 class="text-center">Send Emails</h1>
 <p><a href="<?php echo base_url('main/status'); ?>">Go to Status</a></p>
 <?php echo form_open_multipart(
     base_url('main/upload'),

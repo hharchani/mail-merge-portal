@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+<h1 class="text-center">Send Emails</h1>
 <p><a href="<?php echo base_url('main/submit'); ?>">Back to Submit</a></p>
 <div class="success-msg alert alert-success" style="display:none;">
     Successfully uploaded files.
