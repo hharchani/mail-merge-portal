@@ -6,11 +6,9 @@ class Email_wrapper {
 
     public function __construct() {
         $this->ci = & get_instance();
-        $config = [];
+        $config = array();
         $config['protocol'] = 'smtp';
-        $config['smtp_host'] = 'students.iiit.ac.in';
-        $config['smtp_user'] = 'harshit.harchani';
-        $config['smtp_pass'] = '';
+        $config['smtp_host'] = 'mail.iiit.ac.in';
         $config['smtp_port'] = 25;
         $config['crlf'] = "\r\n";
         $config['newline'] = "\r\n";
@@ -19,7 +17,7 @@ class Email_wrapper {
     }
 
     public function send($student_data, $course_data, $task_data) {
-        $this->ci->email->from('harshit.harchani@students.iiit.ac.in', 'Harshit Harchani');
+        $this->ci->email->from('ipis_noreply@iiit.ac.in', 'IIIT H Parents portal');
         $this->ci->email->subject($this->subj);
         $this->ci->email->to($student_data->parent_email);
         $this->ci->email->message($this->get_msg($student_data, $course_data, $task_data));
@@ -62,17 +60,24 @@ class Email_wrapper {
         $t = new stdClass();
         $t->attendance_month = $month;
         $t->exam_name = $exam;
-        return $this->get_msg($s, $c, $t);
+        
+        $op = '<script>
+                function getDocHeight() {
+                    return document.documentElement.offsetHeight;
+                }
+            </script>';
+        return $this->get_msg($s, $c, $t, $op);
     }
 
-    private function get_msg($student_data, $course_data, $task_data) {
+    private function get_msg($student_data, $course_data, $task_data, $op="") {
         $msg = "<!DOCTYPE html>
                 <html>
                 <head>
                     <title>Marks and Attendance Details [IIIT Hyderabad]</title>
                     <meta charset='UTF-8' />
                     <style>
-                    table { border-collapse:collapse;}
+                    table, td, th { border-color: #999; }
+                    table { border-collapse:collapse; }
                     td, th { padding: .5em; text-align:left;}
                     </style>
                 </head>
@@ -81,7 +86,7 @@ class Email_wrapper {
                     <p>
                         Please find below the attendance for $task_data->attendance_month
                         and $task_data->exam_name marks of your ward $student_data->name</p>
-                    <table>
+                    <table border='1'>
                         <thead>
                             <tr>
                                 <th>Course name</th>
@@ -112,11 +117,7 @@ class Email_wrapper {
             </table>
             <p>Regards,</p>
             <p>IIIT Hyderabad</p>
-            <script>
-                function getDocHeight() {
-                    return document.documentElement.offsetHeight;
-                }
-            </script>
+            $op
         </body>
         </html>";
 
