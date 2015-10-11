@@ -183,7 +183,9 @@ class Main extends CI_Controller {
                 $months_available[] = $month;
             }
         }
+
         $CI = $this;
+        $CI->task->insert_status_msg($task_id, "Info: Started sending emails");
         $marks->each( function( $a ) use ($task_id, $months_available, $CI) {
             if ( ! $a->roll_no) {
                 return;
@@ -227,6 +229,7 @@ class Main extends CI_Controller {
                 $CI->task->insert_status_msg($task_id, "Info: No marks or attendance found for student with roll_no $student->roll_no");
             }
         });
+        $CI->task->insert_status_msg($task_id, "Info: Completed sending emails");
         $this->task->set_task_status($task_id, 'completed');
     }
 
