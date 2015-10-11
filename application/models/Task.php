@@ -53,7 +53,7 @@ class Task extends CI_Model {
         $this->db->select('msg');
         $query = $this->db->get_where('task_status', array('task_id' => $task_id));
         $result = $query->result();
-        $val = [];
+        $val = array();
         if ($result) {
             foreach($result as $row) {
                 $val[] = $row->msg;
