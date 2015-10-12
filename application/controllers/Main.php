@@ -116,8 +116,8 @@ class Main extends CI_Controller {
         $marks_diff = array_diff(array(
             'roll_no',
             'course_code',
-            'Max Marks',
-            'Marks Secured'
+            'max-marks',
+            'marks-obtained'
         ), $marks_fields);
         if (count($marks_diff) > 0) {
             $response->marks->success = false;
@@ -200,11 +200,11 @@ class Main extends CI_Controller {
                 'task_id'       => $task_id,
                 'student_id'    => $student->id,
                 'course_id'     => $course_id,
-                'max_marks'     => $a->get('Max Marks'),
-                'marks_secured' => $a->get('Marks Secured'),
+                'max_marks'     => $a->get('max-marks'),
+                'marks_secured' => $a->get('marks-obtained'),
                 'classes_total' => $classes_total,
                 'classes_missed'=> $classes_missed,
-                'position'      => $a->get('Position')
+                'position'      => $a->get('position')
             ));
         });
 

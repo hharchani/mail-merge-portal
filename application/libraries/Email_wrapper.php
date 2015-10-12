@@ -60,7 +60,7 @@ class Email_wrapper {
         $t = new stdClass();
         $t->attendance_month = $month;
         $t->exam_name = $exam;
-        
+
         $op = '<script>
                 function getDocHeight() {
                     return document.documentElement.offsetHeight;
@@ -104,10 +104,9 @@ class Email_wrapper {
         foreach($course_data as $d) {
             if( ! $d->course_credits) $d->course_credits = "";
             if( ! $d->classes_total) $d->classes_total = "";
-            if( ! $d->classes_missed) $d->classes_missed = "";
             if( ! $d->max_marks) $d->max_marks = "";
             if( ! $d->marks_secured) $d->marks_secured = "";
-            
+
             $msg .= "<tr>";
             $msg .= "<td>$d->course_name</td>";
             $msg .= "<td>$d->course_code</td>";
@@ -121,8 +120,11 @@ class Email_wrapper {
         }
         $msg .= "</tbody>
             </table>
-            <p>Regards,</p>
-            <p>IIIT Hyderabad</p>
+            <p>
+                Regards,<br/>
+                Academic offic<br/>
+                IIIT Hyderabad
+            </p>
             $op
         </body>
         </html>";
