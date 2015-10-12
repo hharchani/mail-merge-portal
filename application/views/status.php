@@ -22,11 +22,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </div>
     <div class="row">
         <div class="col-sm-3">Emails sent</div>
-        <div class="col-sm-9"><?php echo $task_details->emails_sent; ?></div>
+        <div class="col-sm-9"><span class="emails-sent"><?php echo $task_details->emails_sent; ?></span></div>
     </div>
     <div class="row">
         <div class="col-sm-3">Emails failed</div>
-        <div class="col-sm-9"><?php echo $task_details->emails_failed; ?></div>
+        <div class="col-sm-9"><span class="emails-failed"><?php echo $task_details->emails_failed; ?></span></div>
     </div>
     <div class="row">
         <div class="col-sm-3">Exam Name</div>
@@ -77,10 +77,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         else if (/^Info:/.test(msg)) {
                             c = 'text-info';
                         }
+                        else if (/^Success:/.test(msg)) {
+                            c = 'text-success';
+                        }
                         $output.append(
                             $('<p>').text(msg).addClass( c )
                         );
                     });
+                    $('.emails-sent').text( response.emails_sent );
+                    $('.emails_failed').text( response.emails_failed );
                 }
                 if (response.status && response.status !== 'completed' ) {
                     setTimeout(fetchStatus, 1000);

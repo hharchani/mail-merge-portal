@@ -28,13 +28,6 @@ class Task extends CI_Model {
         $this->db->query("UPDATE task SET emails_failed = emails_failed + 1 WHERE id = $task_id");
     }
 
-    public function insert_status_msg($task_id, $msg) {
-        $this->db->insert('task_status', array(
-            'task_id' => $task_id,
-            'msg' => $msg
-        ));
-    }
-
     public function set_task_status($task_id, $status) {
         $this->db->where('id', $task_id);
         $this->db->update('task',array(
@@ -45,6 +38,21 @@ class Task extends CI_Model {
     public function get_task_status($task_id) {
         $result = $this->db->get_where('task', array('id' => $task_id));
         return $result->row();
+    }
+
+    public function complete($task_id, $time_ended) {
+        $this->db->where('id', $task_id);
+        $this->db->update('task',array(
+            'status' => 'completed',
+            'time_ended' => $time_ended
+        ));
+    }
+
+    public function insert_status_msg($task_id, $msg) {
+        $this->db->insert('task_status', array(
+            'task_id' => $task_id,
+            'msg' => $msg
+        ));
     }
 
     public function get_task_status_msg($task_id) {

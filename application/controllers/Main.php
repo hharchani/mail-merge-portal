@@ -217,6 +217,7 @@ class Main extends CI_Controller {
                 $email_success = $CI->email_wrapper->send($student, $course_data, $task);
                 if ($email_success) {
                     $CI->task->increase_sent_email($task_id);
+                    $CI->task->insert_status_msg($task_id, "Success: Email to $student->parent_email sent successfully");
                 }
                 else {
                     $CI->task->increase_failed_email($task_id);
@@ -228,7 +229,7 @@ class Main extends CI_Controller {
             }
         });
         $CI->task->insert_status_msg($task_id, "Info: Completed sending emails");
-        $this->task->set_task_status($task_id, 'completed');
+        $this->task->complete($task_id, date('Y-m-d H:i:s'));
     }
 
     public function get_task_status($task_id = null) {
@@ -253,6 +254,8 @@ class Main extends CI_Controller {
             else {
                 $response->status  = $status->status;
                 $response->message = $this->task->get_task_status_msg($task_id);
+                $response->emails_sent = $status->emails_sent;
+                $response->emails_failed = $status->emails_failed;
             }
         }
         echo json_encode($response);
