@@ -102,6 +102,12 @@ class Email_wrapper {
                         <tbody>
                 ";
         foreach($course_data as $d) {
+            if( ! $d->course_credits) $d->course_credits = "";
+            if( ! $d->classes_total) $d->classes_total = "";
+            if( ! $d->classes_missed) $d->classes_missed = "";
+            if( ! $d->max_marks) $d->max_marks = "";
+            if( ! $d->marks_secured) $d->marks_secured = "";
+            
             $msg .= "<tr>";
             $msg .= "<td>$d->course_name</td>";
             $msg .= "<td>$d->course_code</td>";
