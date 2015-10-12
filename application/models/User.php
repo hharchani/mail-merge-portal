@@ -29,4 +29,9 @@ class User extends CI_Model {
         $this->db->delete('users');
     }
 
+    public function exists($email) {
+        $q = $this->db->get_where('users', array('email' => $email));
+        return $q->row() !== null;
+    }
+
 }

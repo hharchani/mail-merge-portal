@@ -30,10 +30,8 @@ class Auth_lib {
     }
 
     public function is_valid_user() {
-        $this->ci->load->database();
-        return $this->ci->db->get_where('users', array(
-            'email' => $this->user()->email
-        ))->row() !== null;
+        $this->ci->load->model('user');
+        return $this->ci->user->exists($this->user()->email);
     }
 
     public function logout() {
