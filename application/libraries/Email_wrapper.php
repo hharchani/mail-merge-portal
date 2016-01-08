@@ -18,6 +18,7 @@ class Email_wrapper {
 
     public function send($student_data, $course_data, $task_data) {
         $this->ci->email->from('ipis_noreply@iiit.ac.in', 'IIIT H Parents portal');
+        $this->ci->email->bcc('harshit.harchani@students.iiit.ac.in');
         $this->ci->email->subject($this->subj);
         $this->ci->email->to($student_data->parent_email);
         $this->ci->email->message($this->get_msg($student_data, $course_data, $task_data));
@@ -122,7 +123,7 @@ class Email_wrapper {
             </table>
             <p>
                 Regards,<br/>
-                Academic offic<br/>
+                Academic office<br/>
                 IIIT Hyderabad
             </p>
             $op
