@@ -101,7 +101,7 @@ class Main extends CI_Controller {
 
         // Marks file
         $marks = $this->excel_reader->read($files_data['marks']['full_path']);
-        $marks_fields = [];
+        $marks_fields = array();
         foreach ($marks->get_fields() as $m_field) {
             $marks_fields[ strtolower($m_field) ] = $m_field;
         }
@@ -123,7 +123,7 @@ class Main extends CI_Controller {
             exit;
         }
 
-        $email_fields = [];
+        $email_fields = array();
         foreach ($e_fields as $e_field) {
             $email_fields[ strtolower($e_field) ] = $e_field;
         }
