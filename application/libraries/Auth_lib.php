@@ -24,7 +24,7 @@ class Auth_lib {
             $tmp_user = $this->ci->cas->user()->attributes;
             $this->user = new stdClass();
             $this->user->email = $tmp_user['E-Mail'];
-            my_log($this->user->email . " logged in");
+            //my_log($this->user->email . " logged in");
         }
         return $this->user;
     }

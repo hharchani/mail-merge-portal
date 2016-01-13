@@ -26,20 +26,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
     </div>
     <div class="form-group">
-        <label class="col-sm-5 control-label" for="marks">Exam Name*</label>
-        <div class="col-sm-7">
-            <input type="text" id="exam_name" name="exam_name" required>
-            <span class="exam_name_msg"></span>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-5 control-label" for="marks">Attendance Month*</label>
-        <div class="col-sm-7">
-            <input type="text" id="attendance_month" name="attendance_month" required>
-            <span class="attendance_month_msg"></span>
-        </div>
-    </div>
-    <div class="form-group">
         <div class="col-sm-2 col-sm-offset-5">
             <button type="submit" class="btn btn-default btn-success form-control">Send</button>
         </div>

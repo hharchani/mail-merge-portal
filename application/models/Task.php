@@ -7,13 +7,11 @@ class Task extends CI_Model {
         $this->load->database();
     }
 
-    public function create_task($email, $ip, $time_created, $exam_name, $attendance_month) {
+    public function create_task($email, $ip, $time_created) {
         $task_data = array(
             'created_by'        => $email,
             'ip'                => $ip,
-            'time_created'      => $time_created,
-            'exam_name'         => $exam_name,
-            'attendance_month'  => $attendance_month
+            'time_created'      => $time_created
         );
         $this->db->insert('task', $task_data);
         $task_data['id'] = $this->db->insert_id();

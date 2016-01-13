@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Bg_processing {
 
     public function send_and_close($value='') {
-        ob_end_clean();
+        @ob_end_clean();
         header("Connection: close\r\n");
         header("Content-Encoding: none\r\n");
         ignore_user_abort(true); // optional
@@ -16,7 +16,7 @@ class Bg_processing {
         header("Content-Length: $size");
         ob_end_flush();     // Strange behaviour, will not work
         flush();            // Unless both are called !
-        ob_end_clean();
+        @ob_end_clean();
         if (session_id()) session_write_close();
     }
 }

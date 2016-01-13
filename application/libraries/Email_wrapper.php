@@ -25,13 +25,7 @@ class Email_wrapper {
         return $this->ci->email->send();
     }
 
-    public function get_sample_email($exam, $month) {
-        if ( ! $exam) {
-            $exam = 'Exam';
-        }
-        if ( ! $month) {
-            $month = 'Month Name';
-        }
+    public function get_sample_email() {
 
         $s = new stdClass();
         $s->name = 'Harshit Harchani';
@@ -59,8 +53,6 @@ class Email_wrapper {
         $c[] = $d;
 
         $t = new stdClass();
-        $t->attendance_month = $month;
-        $t->exam_name = $exam;
 
         $op = '<script>
                 function getDocHeight() {
@@ -85,8 +77,7 @@ class Email_wrapper {
                 <body>
                     <p>Dear Parent,</p>
                     <p>
-                        Please find below the attendance for $task_data->attendance_month
-                        and $task_data->exam_name marks of your ward $student_data->name</p>
+                        Please find below the monsoon 2016 semester's attendance for and grades for of your ward $student_data->name</p>
                     <table border='1'>
                         <thead>
                             <tr>
@@ -95,9 +86,7 @@ class Email_wrapper {
                                 <th>Course credits</th>
                                 <th>Total classes</th>
                                 <th>Classes missed</th>
-                                <th>Maximum marks</th>
-                                <th>Marks secured</th>
-                                <th>Position</th>
+                                <th>Grade</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -114,13 +103,12 @@ class Email_wrapper {
             $msg .= "<td>$d->course_credits</td>";
             $msg .= "<td>$d->classes_total</td>";
             $msg .= "<td>$d->classes_missed</td>";
-            $msg .= "<td>$d->max_marks</td>";
-            $msg .= "<td>$d->marks_secured</td>";
             $msg .= "<td>$d->position</td>";
             $msg .= "</tr>";
         }
         $msg .= "</tbody>
             </table>
+            <br/>
             <p>
                 Regards,<br/>
                 Academic office<br/>

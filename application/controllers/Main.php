@@ -84,19 +84,8 @@ class Main extends CI_Controller {
             }
         }
         // Validating input data
-        $task_data = array('attendance_month' => null, 'exam_name' => null);
-        foreach($task_data as $name => $data) {
-            $response->$name = new stdClass();
-            if ( ! $this->input->post($name) ) {
-                $response->$name->success = false;
-                $response->$name->errors = 'Please fill this field';
-            }
-            else {
-                $response->$name->success = true;
-            }
-        }
         $form_validation_success = true;
-        foreach(array_merge($task_data, $files_data) as $name => $data) {
+        foreach($files_data as $name => $data) {
             if ( ! $response->$name->success) {
                 $form_validation_success = false;
                 break;
@@ -112,33 +101,31 @@ class Main extends CI_Controller {
 
         // Marks file
         $marks = $this->excel_reader->read($files_data['marks']['full_path']);
-        $marks_fields = $marks->get_fields();
-        $marks_diff = array_diff(array(
-            'roll_no',
-            'course_code',
-            'max-marks',
-            'marks-obtained'
-        ), $marks_fields);
-        if (count($marks_diff) > 0) {
-            $response->marks->success = false;
-            $response->marks->errors = 'Reading marks file failed. Fields ' . implode(', ', $marks_diff) . ' not found.';
+        $marks_fields = [];
+        foreach ($marks->get_fields() as $m_field) {
+            $marks_fields[ strtolower($m_field) ] = $m_field;
         }
-
         // Email file
         $emails = $this->excel_reader->read($files_data['email']['full_path']);
-        $email_fields = $emails->get_fields();
+
+        $e_fields = $emails->get_fields();
         $email_diff = array_diff(array(
             'roll_no',
             'father_email_id',
-        ), $email_fields);
+        ), $e_fields);
         if (count($email_diff) > 0) {
             $response->email->success = false;
-            $response->email->errors = 'Reading email file failed. Fields ' . implode(', ', $email_diff) . ' not found.';
+            $response->email->errors = 'Field ' . implode(', ', $email_diff) . ' not found in email file';
         }
 
-        if ( ! $response->marks->success OR ! $response->email->success) {
+        if ( ! $response->email->success) {
             echo json_encode($response);
             exit;
+        }
+
+        $email_fields = [];
+        foreach ($e_fields as $e_field) {
+            $email_fields[ strtolower($e_field) ] = $e_field;
         }
 
         // Everything seems fine now. Creating task to start sending emails
@@ -147,9 +134,7 @@ class Main extends CI_Controller {
         $task = $this->task->create_task(
             $this->auth_lib->user()->email,
             $this->input->ip_address(),
-            $current_time,
-            $this->input->post('exam_name'),
-            $this->input->post('attendance_month')
+            $current_time
         );
         $task_id = $task->id;
 
@@ -177,14 +162,14 @@ class Main extends CI_Controller {
         $months = array( 'jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec');
         $months_available = array();
         foreach($months as $month) {
-            if ( in_array( $month . '-classes' , $marks_fields) ) {
+            if ( in_array( $month . '-classes' , array_keys($marks_fields) ) ) {
                 $months_available[] = $month;
             }
         }
 
         $CI = $this;
-        $CI->task->insert_status_msg($task_id, "Info: Started sending emails");
-        $marks->each( function( $a ) use ($task_id, $months_available, $CI) {
+        $CI->task->insert_status_msg($task_id, "Info: Started reading marks file");
+        $marks->each( function( $a ) use ($task_id, $months_available, $marks_fields, $CI) {
             if ( ! $a->roll_no) {
                 return;
             }
@@ -193,8 +178,8 @@ class Main extends CI_Controller {
             $classes_total = 0;
             $classes_missed = 0;
             foreach($months_available as $month) {
-                $classes_total += $a->get($month.'-classes');
-                $classes_missed += $a->get($month.'-absents');
+                $classes_total  += $a->get( $marks_fields[$month.'-classes']);
+                $classes_missed += $a->get( $marks_fields[$month.'-absents']);
             }
             $CI->course->insert_marks_info(array(
                 'task_id'       => $task_id,
@@ -204,11 +189,12 @@ class Main extends CI_Controller {
                 'marks_secured' => $a->get('marks-obtained'),
                 'classes_total' => $classes_total,
                 'classes_missed'=> $classes_missed,
-                'position'      => $a->get('position')
+                'position'      => $a->get('Grade')
             ));
         });
-
+        $CI->task->insert_status_msg($task_id, "Info: End reading marks file");
         $this->load->library('email_wrapper');
+        $CI->task->insert_status_msg($task_id, "Info: Started sending emails");
         $emails->each( function( $a ) use ($task, $CI) {
             $task_id = $task->id;
             $student = $CI->student->get_or_create( $a->roll_no, null, $a->father_email_id );
@@ -217,6 +203,7 @@ class Main extends CI_Controller {
                 $email_success = $CI->email_wrapper->send($student, $course_data, $task);
                 if ($email_success) {
                     $CI->task->increase_sent_email($task_id);
+                    my_log("Task $task_id: Success: Email to $student->parent_email sent successfully");
                     $CI->task->insert_status_msg($task_id, "Success: Email to $student->parent_email sent successfully");
                 }
                 else {
@@ -261,8 +248,8 @@ class Main extends CI_Controller {
         echo json_encode($response);
     }
 
-    public function sample_email($exam = null, $month = null) {
+    public function sample_email() {
         $this->load->library('email_wrapper');
-        echo $this->email_wrapper->get_sample_email(urldecode($exam), urldecode($month));
+        echo $this->email_wrapper->get_sample_email();
     }
 }
