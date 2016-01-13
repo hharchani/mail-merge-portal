@@ -196,6 +196,9 @@ class Main extends CI_Controller {
         $this->load->library('email_wrapper');
         $CI->task->insert_status_msg($task_id, "Info: Started sending emails");
         $emails->each( function( $a ) use ($task, $CI) {
+            if (!$a->roll_no || ! $a->father_email_id ) {
+                return;
+            }
             $task_id = $task->id;
             $student = $CI->student->get_or_create( $a->roll_no, null, $a->father_email_id );
             $course_data = $CI->course->get_data($task_id, $student->id);
