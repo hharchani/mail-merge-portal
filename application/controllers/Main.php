@@ -200,6 +200,7 @@ class Main extends CI_Controller {
             $student = $CI->student->get_or_create( $a->roll_no, null, $a->father_email_id );
             $course_data = $CI->course->get_data($task_id, $student->id);
             if (count($course_data)) {
+                my_log($student->parent_email . ' - ' . count($course_data));
                 $email_success = $CI->email_wrapper->send($student, $course_data, $task);
                 if ($email_success) {
                     $CI->task->increase_sent_email($task_id);
