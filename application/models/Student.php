@@ -8,7 +8,7 @@ class Student extends CI_Model {
         $this->load->database();
     }
 
-    public function get_or_create($roll_no, $name=null, $parent_email=null) {
+    public function get_or_create($roll_no, $name=null, $parent_email=null, $sgpa = null) {
         $result = $this->db->get_where('student', array('roll_no' => $roll_no));
         $row = $result->row();
         if ($row === null) {
@@ -20,6 +20,9 @@ class Student extends CI_Model {
             }
             if ($parent_email) {
                 $insert_data['parent_email'] = trim($parent_email);
+            }
+            if ($sgpa && trim($sgpa)) {
+                $insert_data['sgpa'] = $sgpa;
             }
             $this->db->insert('student', $insert_data);
             $insert_data['id'] = $this->db->insert_id();
@@ -34,6 +37,10 @@ class Student extends CI_Model {
             if ($parent_email) {
                 $update_data['parent_email'] = trim($parent_email);
                 $row->parent_email = $update_data['parent_email'];
+            }
+            if ($sgpa && trim($sgpa)) {
+                $update_data['sgpa'] = $sgpa;
+                $row->sgpa = $update_data['sgpa'];
             }
             if ( count($update_data) ) {
                 $this->db->where('id', $row->id);

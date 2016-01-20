@@ -173,7 +173,7 @@ class Main extends CI_Controller {
             if ( ! $a->roll_no) {
                 return;
             }
-            $student = $CI->student->get_or_create( $a->roll_no, $a->name );
+            $student = $CI->student->get_or_create( $a->roll_no, $a->name, null, $a->SGPA );
             $course_id  = $CI->course->get_or_create( $a->course_code, $a->course_name, $a->credits );
             $classes_total = 0;
             $classes_missed = 0;
@@ -189,7 +189,7 @@ class Main extends CI_Controller {
                 'marks_secured' => $a->get('marks-obtained'),
                 'classes_total' => $classes_total,
                 'classes_missed'=> $classes_missed,
-                'position'      => $a->get('Grade')
+                'grade'         => $a->get('Grade')
             ));
         });
         $CI->task->insert_status_msg($task_id, "Info: End reading marks file");

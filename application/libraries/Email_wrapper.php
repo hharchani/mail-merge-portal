@@ -29,6 +29,7 @@ class Email_wrapper {
 
         $s = new stdClass();
         $s->name = 'Harshit Harchani';
+        $s->sgpa = 9.5;
         $c = array();
         $d = new stdClass();
         $d->course_name     = 'Compilers';
@@ -38,7 +39,7 @@ class Email_wrapper {
         $d->classes_missed  = 1;
         $d->max_marks       = 25;
         $d->marks_secured   = 20;
-        $d->position        = 'Top-1/3';
+        $d->grade           = 'B';
         $c[] = $d;
 
         $d = new stdClass();
@@ -49,7 +50,7 @@ class Email_wrapper {
         $d->classes_missed  = 0;
         $d->max_marks       = 100;
         $d->marks_secured   = 55;
-        $d->position        = 'Middle-1/3';
+        $d->grade           = 'A';
         $c[] = $d;
 
         $t = new stdClass();
@@ -77,7 +78,7 @@ class Email_wrapper {
                 <body>
                     <p>Dear Parent,</p>
                     <p>
-                        Please find below the monsoon 2016 semester's attendance for and grades for of your ward $student_data->name</p>
+                        Please find below the Monsoon 2016 semester's attendance and grades for of your child $student_data->name</p>
                     <table border='1'>
                         <thead>
                             <tr>
@@ -103,11 +104,15 @@ class Email_wrapper {
             $msg .= "<td>$d->course_credits</td>";
             $msg .= "<td>$d->classes_total</td>";
             $msg .= "<td>$d->classes_missed</td>";
-            $msg .= "<td>$d->position</td>";
+            $msg .= "<td>$d->grade</td>";
             $msg .= "</tr>";
         }
         $msg .= "</tbody>
             </table>
+            <br/>
+            <p>
+                The SGPA of your child for this semester is $student_data->sgpa
+            </p>
             <br/>
             <p>
                 Regards,<br/>
