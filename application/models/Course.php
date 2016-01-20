@@ -47,7 +47,7 @@ class Course extends CI_Model {
                     `marks_secured`,
                     `classes_total`,
                     `classes_missed`,
-                    `position`,
+                    `grade`,
                     `name` as `course_name`,
                     `code` as `course_code`,
                     `credits` as `course_credits`
