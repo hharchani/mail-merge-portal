@@ -78,7 +78,8 @@ class Email_wrapper {
                 <body>
                     <p>Dear Parent,</p>
                     <p>
-                        Please find below the Monsoon 2016 semester's attendance and grades for of your child $student_data->name</p>
+                        Please find below the Monsoon 2015 semester's attendance and grades for your ward $student_data->name
+                    </p>
                     <table border='1'>
                         <thead>
                             <tr>
@@ -111,7 +112,7 @@ class Email_wrapper {
             </table>
             <br/>
             <p>
-                The SGPA of your child for this semester is $student_data->sgpa
+                SGPA for the Semester Monsoon 2015: $student_data->sgpa
             </p>
             <br/>
             <p>
